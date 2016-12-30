@@ -7,7 +7,8 @@ import os.path
 from parameters_bonus import *
 
 # To Do:
-# 1. Simpan bonus
+# 1. Buat label jumlah mobil uneditable. Buat list baru untuk entries
+# 2. Buat warna merah untuk entries yang libur.
 # 2. Refactoring code
 
 class GUI(Frame):
@@ -16,16 +17,18 @@ class GUI(Frame):
         Frame.__init__(self, parent)
 
         self.pointMode = True
-        self.points = []
-        self.carsEntries = []
-        self.savePoints = []
-        self.carsPoints = []
-        self.bonuses = []
+        self.points = [] # StringVar for entries
+        self.pointsEntries = [] # List of entries
+        self.carsEntries = [] # StringVar for number of cars
+        self.savePoints = [] # List
+        self.carsPoints = [] # List of number of cars
+        self.bonuses = [] # List of bonuses
         self.parent = parent
         self.changeLabel = StringVar()
         self.totalCarsLabel = StringVar()
         self.totalPointsLabel = []
         self.initUI()
+
 
     def center(self):
         self.parent.update_idletasks()
@@ -38,9 +41,10 @@ class GUI(Frame):
         self.parent.geometry("%dx%d+%d+%d" %(size + (x, y)))
 
     def copy(self, day):
-        cars = self.carsEntries[day].get()
-        for empl in range(numEmployees):
-            self.points[empl][day].set(cars)
+        if self.pointMode == True:
+            cars = self.carsEntries[day].get()
+            for empl in range(numEmployees):
+                self.points[empl][day].set(cars)
 
     def calculate(self):
         if self.pointMode == True:
@@ -55,6 +59,7 @@ class GUI(Frame):
 
                 for employee in range(numEmployees):
                     self.points[employee][day].set(bonusList[employee])
+
                     # save bonuses
                     self.bonuses[employee][day] = bonusList[employee]
 
@@ -65,6 +70,16 @@ class GUI(Frame):
 
             self.setTotalLabels()
 
+            # Make uneditable
+            self.makeEditable(False)
+
+    def makeEditable(self, edit):
+        for employee in range(numEmployees):
+            for day in range(numDays):
+                if edit == True:
+                    self.pointsEntries[employee][day].configure(state=NORMAL)
+                else:
+                    self.pointsEntries[employee][day].configure(state=DISABLED)
 
     def pointsToFile(self, filename):
         if self.pointMode == True:
@@ -79,6 +94,8 @@ class GUI(Frame):
                     else:
                         point = int(point_entry)
                     self.savePoints[employee][day] = point
+            # Set total labels
+            self.setTotalLabels()
 
             with open(filename, 'w+') as out:
                 # save cars points
@@ -120,7 +137,14 @@ class GUI(Frame):
         self.setTotalLabels()
 
     def bonusToFile(self, filename):
-        pass
+        if self.pointMode == False:
+            with open(filename, 'w+') as out:
+
+                # save employees' bonuses
+                for employeeBonus in self.bonuses:
+                    for dayBonus in employeeBonus[:-1]:
+                        out.write(str(dayBonus) + ',')
+                    out.write(str(employeeBonus[-1]) + '\n')
 
     def seePoint(self):
         for employee in range(numEmployees):
@@ -132,6 +156,9 @@ class GUI(Frame):
 
         # Set total label
         self.setTotalLabels()
+
+        # Make editable
+        self.makeEditable(True)
 
     def seeCarsPoints(self):
         for day in range(numDays):
@@ -206,13 +233,16 @@ class GUI(Frame):
             lbl.grid(row=emplRow, column=0, sticky='ew')
 
             emplPoint = []
+            entryPoint = []
             for col in range(len(days)):
                 entryText = StringVar()
                 pt = Entry(self, textvariable=entryText, width=width_entry)
                 pt.grid(row=emplRow, column=col+1)
                 emplPoint.append(entryText)
+                entryPoint.append(pt)
 
             self.points.append(emplPoint)
+            self.pointsEntries.append(entryPoint)
 
             # Total labels
             self.totalPointsLabel.append(StringVar())
@@ -245,10 +275,14 @@ class GUI(Frame):
         calcButton = Button(self, text="Hitung Bonus", command=self.calculate)
         calcButton.grid(row=num_rows-1, column=5, columnspan=2)
 
+        # Save Bonus Button
+        saveBonusButton = Button(self, text="Simpan Bonus", command=lambda: self.bonusToFile(bonuses_file))
+        saveBonusButton.grid(row=num_rows-1, column=7, columnspan=2)
+
         # Label Mode
         lblMode = Label(self, textvariable=self.changeLabel, bg='yellow')
-        lblMode.grid(row=num_rows-1, column=7, columnspan=2)
-        self.changeLabel.set('Menampilkan Point')
+        lblMode.grid(row=num_rows-1, column=9, columnspan=2)
+        self.changeLabel.set('Menampilkan Poin')
 
         # Total Mode
         lblSumCars = Label(self, textvariable=self.totalCarsLabel, width=width_entry, bg='#FEF5E7')
