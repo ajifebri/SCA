@@ -131,7 +131,7 @@ class GUI(Frame):
             for employee in range(numEmployees):
                 line = inFile.readline()
                 strPoints = line.rstrip('\n').split(',')
-                self.savePoints.append([int(strP) for strP in strPoints])
+                self.savePoints.append([int(strP) for strP in strPoints[:numDays]])
 
         # Set total labels
         self.setTotalLabels()
@@ -176,8 +176,8 @@ class GUI(Frame):
         Style().configure("TButton", padding=(0, 5, 0, 5),
                 font='serif 10')
 
-        num_rows = 15
-        num_columns = 16
+        num_rows = numEmployees + 5
+        num_columns = numDays + 2
         for row in range(num_rows):
             self.rowconfigure(row, pad=3)
 
@@ -188,17 +188,9 @@ class GUI(Frame):
         title.config(font=20)
         title.grid(row=0, columnspan=num_columns, sticky=W+E)
 
-        days = ["Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu", "Senin", 
-                "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu", "Senin"]
-
-        #days = ["Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu", "Senin"]
-                
-
-        employees = ["Wahyu", "Suras", "Surya", "Agung", "Nur", "Mega", "Ari", "Nando"]
-
         # Days
-        for day in range(len(days)):
-            strDay = days[day]
+        for day in range(numDays):
+            strDay = workDays[day]
             lbl = Label(self, text=strDay, bg='green')
             lbl.grid(row=1, column=day+1, sticky='ew', padx=3)
 
@@ -211,7 +203,7 @@ class GUI(Frame):
         lbl.grid(row=2, column=0, sticky='ew')
 
         width_entry = 7
-        for i in range(len(days)):
+        for i in range(numDays):
             enText = StringVar()
             en = Entry(self, textvariable=enText, width=width_entry)
             en.grid(row=2, column=i+1)
@@ -219,13 +211,13 @@ class GUI(Frame):
 
         # Copy Button
         copyButtons = []
-        for col in range(1, len(days)+1):
+        for col in range(1, numDays+1):
             cpyButton = Button(self, text="Copy", width=5, command=lambda col=col: self.copy(col-1))
             cpyButton.grid(row=3, column=col)
             copyButtons.append(cpyButton)
 
         # Employees
-        for empl in range(len(employees)):
+        for empl in range(numEmployees):
             emplRow = empl+4
 
             name = employees[empl]
@@ -234,7 +226,7 @@ class GUI(Frame):
 
             emplPoint = []
             entryPoint = []
-            for col in range(len(days)):
+            for col in range(numDays):
                 entryText = StringVar()
                 pt = Entry(self, textvariable=entryText, width=width_entry)
                 pt.grid(row=emplRow, column=col+1)

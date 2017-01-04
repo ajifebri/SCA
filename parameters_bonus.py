@@ -10,9 +10,15 @@ names = {0: 'Wahyu',
          6: 'Ari',
          7: 'Nando'}
 
-numEmployees = 8
-numDays = 14
+workDays = ["Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu", "Senin", 
+            "Selasa", "Rabu", "Kamis", "Jumat"]
+
+employees = ["Wahyu", "Suras", "Surya", "Agung", "Nur", "Mega", "Ari", "Nando"]
+
+numEmployees = len(employees) 
+numDays = len(workDays)
 bonusPerPoint = 5000
+
 
 # Filenames
 points_file = 'points.csv'
