@@ -8,8 +8,8 @@ from parameters_bonus import *
 
 # To Do:
 # 1. Buat label jumlah mobil uneditable. Buat list baru untuk entries
-# 2. Buat warna merah untuk entries yang libur.
-# 2. Refactoring code
+# 2. Background entries putih-biru muda-putih
+# 3. Refactoring code
 
 class GUI(Frame):
 
@@ -130,8 +130,11 @@ class GUI(Frame):
 
             for employee in range(numEmployees):
                 line = inFile.readline()
-                strPoints = line.rstrip('\n').split(',')
-                self.savePoints.append([int(strP) for strP in strPoints[:numDays]])
+                if line:
+                    strPoints = line.rstrip('\n').split(',')
+                    self.savePoints.append([int(strP) for strP in strPoints[:numDays]])
+                else:
+                    self.savePoints.append([0 for _ in range(numDays)])
 
         # Set total labels
         self.setTotalLabels()

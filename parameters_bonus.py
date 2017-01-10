@@ -8,12 +8,13 @@ names = {0: 'Wahyu',
          4: 'Nur',
          5: 'Mega',
          6: 'Ari',
-         7: 'Nando'}
+         7: 'Nando',
+         8: 'Angga'}
 
 workDays = ["Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu", "Senin", 
             "Selasa", "Rabu", "Kamis", "Jumat"]
 
-employees = ["Wahyu", "Suras", "Surya", "Agung", "Nur", "Mega", "Ari", "Nando"]
+employees = ["Wahyu", "Suras", "Surya", "Agung", "Nur", "Mega", "Ari", "Nando", "Angga"]
 
 numEmployees = len(employees) 
 numDays = len(workDays)
