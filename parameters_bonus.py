@@ -11,8 +11,7 @@ names = {0: 'Wahyu',
          7: 'Nando',
          8: 'Angga'}
 
-workDays = ["Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu", "Senin", 
-            "Selasa", "Rabu", "Kamis", "Jumat"]
+workDays = ["Sabtu", "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat"]
 
 employees = ["Wahyu", "Suras", "Surya", "Agung", "Nur", "Mega", "Ari", "Nando", "Angga"]
 

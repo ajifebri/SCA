@@ -7,9 +7,9 @@ import os.path
 from parameters_bonus import *
 
 # To Do:
-# 1. Buat label jumlah mobil uneditable. Buat list baru untuk entries
-# 2. Background entries putih-biru muda-putih
-# 3. Refactoring code
+# 1. Refactoring code supaya extensible (ganti jumlah hari, ganti jumlah karyawan).
+# 2. Buat label jumlah mobil uneditable. Buat list baru untuk entries
+# 3. Background entries putih-biru muda-putih
 
 class GUI(Frame):
 
